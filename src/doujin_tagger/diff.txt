@@ -1,0 +1,31 @@
+mp4_patch.py modified mutagen/mp4/__init__.py
+35,37c35,37
+< from ._atom import Atoms, Atom, AtomError
+< from ._util import parse_full_atom
+< from ._as_entry import AudioSampleEntry, ASEntryError
+---
+> from mutagen.mp4._atom import Atoms, Atom, AtomError
+> from mutagen.mp4._util import parse_full_atom
+> from mutagen.mp4._as_entry import AudioSampleEntry, ASEntryError
+585a586,588
+>         if isinstance(value, bytes):
+>             return Atom.render(_key2name(key), Atom.render(
+>                 b"data", struct.pack(">2I", version << 24 | flags, 0) + value))
+622a626
+>         ret = b""
+630c634,635
+<             data += struct.pack(
+---
+>             # for every element we give render once
+>             data = struct.pack(
+632a638
+>             ret += Atom.render(b"----", mean + name + data)
+634c640
+<         return Atom.render(b"----", mean + name + data)
+---
+>         return ret
+823,824c829
+< 
+<         return self.__render_data(key, 0, flags, encoded)
+---
+>         return b''.join(self.__render_data(key, 0, flags, each_encoded) for each_encoded in encoded)

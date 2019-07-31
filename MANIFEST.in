@@ -1,0 +1,13 @@
+graft src/doujin_tagger
+graft test
+
+include tox.ini 
+include confest.py 
+include README.rst
+include README.zh_cn.rst
+include LICENSE
+include setup.cfg
+include *.py
+include requirements.txt
+
+global-exclude *.py[cod] __pycache__ *.so *.dylib
